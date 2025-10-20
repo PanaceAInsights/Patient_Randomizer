@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Audit Randomizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #495057;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="number"],
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #5e72e4;
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+
+        .input-group textarea {
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(94, 114, 228, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #5e72e4;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .results-table th {
+            background: #f1f3f5;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: #495057;
+        }
+
+        .tab.active {
+            color: #5e72e4;
+            border-bottom-color: #5e72e4;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .help-text {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .allocation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .allocation-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .allocation-card h4 {
+            color: #5e72e4;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .patient-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .patient-list li {
+            padding: 5px;
+            border-bottom: 1px solid #f1f3f5;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .patient-list li:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .allocation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Patient Audit Randomizer</h1>
+            <p>Randomly allocate patients to doctors for clinical audits</p>
+        </div>
+        
+        <div class="main-content">
+            <!-- Configuration Section -->
+            <div class="section">
+                <h2 class="section-title">⚙️ Configuration</h2>
+                
+                <div class="input-group">
+                    <label for="auditName">Audit Name</label>
+                    <input type="text" id="auditName" placeholder="e.g., Q1 2024 Patient Safety Audit">
+                </div>
+                
+                <div class="input-group">
+                    <label for="patientsPerDoctor">Patients per Doctor</label>
+                    <input type="number" id="patientsPerDoctor" min="1" max="50" value="10">
+                    <span class="help-text">Number of patients to allocate to each doctor (8-10 recommended)</span>
+                </div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="section">
+                <h2 class="section-title">📥 Data Input</h2>
+                
+                <div class="tab-container">
+                    <button class="tab active" onclick="switchTab('manual')">Manual Entry</button>
+                    <button class="tab" onclick="switchTab('csv')">CSV Import</button>
+                </div>
+                
+                <!-- Manual Entry Tab -->
+                <div id="manualTab" class="tab-content active">
+                    <div class="input-group">
+                        <label for="doctorIds">Doctor Staff IDs (8-digit, one per line)</label>
+                        <textarea id="doctorIds" placeholder="12345678&#10;87654321&#10;11223344"></textarea>
+                        <span class="help-text">Enter 8-digit staff IDs, one per line</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="patientMrns">Patient MRNs (6-10 digits, hyphens OK)</label>
+                        <textarea id="patientMrns" placeholder="123456&#10;112-67-40&#10;98765-4321&#10;1112223334"></textarea>
+                        <span class="help-text">Enter 6-10 digit MRNs (hyphens will be removed automatically)</span>
+                    </div>
+                </div>
+                
+                <!-- CSV Import Tab -->
+                <div id="csvTab" class="tab-content">
+                    <div class="input-group">
+                        <label>Import Doctors (CSV with Staff IDs)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="file-input" id="doctorCsv" accept=".csv">
+                            <button class="btn btn-secondary">Choose File</button>
+                        </div>
+                        <span id="doctorFileName"></span>
+                        <span class="help-text">CSV should contain 8-digit staff IDs in the first column</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Import Patients (CSV with MRNs)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="file-input" id="patientCsv" accept=".csv">
+                            <button class="btn btn-secondary">Choose File</button>
+                        </div>
+                        <span id="patientFileName"></span>
+                        <span class="help-text">CSV should contain 6-10 digit MRNs in the first column</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="validateAndRandomize()">🎲 Randomize Allocation</button>
+                <button class="btn btn-danger" onclick="clearAll()">🗑️ Clear All</button>
+            </div>
+
+            <!-- Statistics Section -->
+            <div id="statsSection" class="section hidden">
+                <h2 class="section-title">📊 Statistics</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalDoctors">0</div>
+                        <div class="stat-label">Total Doctors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalPatients">0</div>
+                        <div class="stat-label">Total Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="patientsAllocated">0</div>
+                        <div class="stat-label">Patients Allocated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="patientsUnallocated">0</div>
+                        <div class="stat-label">Unallocated</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="section hidden">
+                <h2 class="section-title">📋 Allocation Results</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="exportToCSV()">📥 Export to CSV</button>
+                    <button class="btn btn-info" onclick="exportToJSON()">📄 Export to JSON</button>
+                    <button class="btn btn-secondary" onclick="printResults()">🖨️ Print Results</button>
+                </div>
+                
+                <div id="allocationDisplay"></div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="messageArea"></div>
+        </div>
+    </div>
+
+    <script>
+        let doctors = [];
+        let patients = [];
+        let allocations = {};
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            if (tabName === 'manual') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('manualTab').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('csvTab').classList.add('active');
+            }
+        }
+
+        function showMessage(message, type = 'info') {
+            const messageArea = document.getElementById('messageArea');
+            const alertClass = `alert-${type}`;
+            messageArea.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+            setTimeout(() => {
+                messageArea.innerHTML = '';
+            }, 5000);
+        }
+
+        function validateStaffId(id) {
+            return /^\d{8}$/.test(id.trim());
+        }
+
+        function validateMRN(mrn) {
+            // Remove hyphens and spaces, then check if it's 6-10 digits
+            const cleaned = mrn.trim().replace(/[-\s]/g, '');
+            return /^\d{6,10}$/.test(cleaned);
+        }
+        
+        function cleanMRN(mrn) {
+            // Remove hyphens and spaces from MRN
+            return mrn.trim().replace(/[-\s]/g, '');
+        }
+
+        function parseManualInput() {
+            const doctorInput = document.getElementById('doctorIds').value;
+            const patientInput = document.getElementById('patientMrns').value;
+            
+            doctors = doctorInput.split('\n')
+                .map(id => id.trim())
+                .filter(id => id.length > 0);
+            
+            // Clean patient MRNs (remove hyphens/spaces) before storing
+            patients = patientInput.split('\n')
+                .map(mrn => mrn.trim())
+                .filter(mrn => mrn.length > 0)
+                .map(mrn => cleanMRN(mrn));
+            
+            // Validate doctor IDs
+            const invalidDoctors = doctors.filter(id => !validateStaffId(id));
+            if (invalidDoctors.length > 0) {
+                showMessage(`Invalid doctor IDs found (must be 8 digits): ${invalidDoctors.join(', ')}`, 'danger');
+                return false;
+            }
+            
+            // Validate patient MRNs (after cleaning)
+            const invalidPatients = patients.filter(mrn => !/^\d{6,10}$/.test(mrn));
+            if (invalidPatients.length > 0) {
+                showMessage(`Invalid patient MRNs found (must be 6-10 digits after removing hyphens): ${invalidPatients.slice(0, 5).join(', ')}${invalidPatients.length > 5 ? '...' : ''}`, 'danger');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateAndRandomize() {
+            // Check if we're using manual or CSV input
+            const isManualTab = document.getElementById('manualTab').classList.contains('active');
+            
+            if (isManualTab) {
+                if (!parseManualInput()) {
+                    return;
+                }
+            } else {
+                // CSV validation is done during file upload
+                if (doctors.length === 0 || patients.length === 0) {
+                    showMessage('Please import both doctor and patient CSV files', 'warning');
+                    return;
+                }
+            }
+            
+            // Check if we have enough data
+            if (doctors.length === 0) {
+                showMessage('Please enter at least one doctor ID', 'warning');
+                return;
+            }
+            
+            if (patients.length === 0) {
+                showMessage('Please enter at least one patient MRN', 'warning');
+                return;
+            }
+            
+            const patientsPerDoctor = parseInt(document.getElementById('patientsPerDoctor').value);
+            const requiredPatients = doctors.length * patientsPerDoctor;
+            
+            if (patients.length < requiredPatients) {
+                showMessage(`Warning: You have ${patients.length} patients but need ${requiredPatients} for complete allocation (${doctors.length} doctors × ${patientsPerDoctor} patients)`, 'warning');
+            }
+            
+            // Remove duplicates
+            doctors = [...new Set(doctors)];
+            patients = [...new Set(patients)];
+            
+            performRandomization();
+        }
+
+        function performRandomization() {
+            const patientsPerDoctor = parseInt(document.getElementById('patientsPerDoctor').value);
+            
+            // Shuffle patients array using Fisher-Yates algorithm
+            const shuffledPatients = [...patients];
+            for (let i = shuffledPatients.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledPatients[i], shuffledPatients[j]] = [shuffledPatients[j], shuffledPatients[i]];
+            }
+            
+            // Allocate patients to doctors
+            allocations = {};
+            let patientIndex = 0;
+            
+            for (const doctor of doctors) {
+                allocations[doctor] = [];
+                for (let i = 0; i < patientsPerDoctor && patientIndex < shuffledPatients.length; i++) {
+                    allocations[doctor].push(shuffledPatients[patientIndex]);
+                    patientIndex++;
+                }
+            }
+            
+            // Update statistics
+            updateStatistics(patientIndex);
+            
+            // Display results
+            displayResults();
+            
+            showMessage('Randomization completed successfully!', 'success');
+        }
+
+        function updateStatistics(allocatedCount) {
+            document.getElementById('totalDoctors').textContent = doctors.length;
+            document.getElementById('totalPatients').textContent = patients.length;
+            document.getElementById('patientsAllocated').textContent = allocatedCount;
+            document.getElementById('patientsUnallocated').textContent = patients.length - allocatedCount;
+            
+            document.getElementById('statsSection').classList.remove('hidden');
+        }
+
+        function displayResults() {
+            const resultsSection = document.getElementById('resultsSection');
+            const allocationDisplay = document.getElementById('allocationDisplay');
+            
+            let html = '<div class="allocation-grid">';
+            
+            for (const [doctor, patientList] of Object.entries(allocations)) {
+                html += `
+                    <div class="allocation-card">
+                        <h4>Doctor: ${doctor}</h4>
+                        <p style="color: #6c757d; margin-bottom: 10px;">Allocated Patients: ${patientList.length}</p>
+                        <ul class="patient-list">
+                            ${patientList.map(patient => `<li>${patient}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            
+            allocationDisplay.innerHTML = html;
+            resultsSection.classList.remove('hidden');
+        }
+
+        function exportToCSV() {
+            const auditName = document.getElementById('auditName').value || 'audit';
+            const timestamp = new Date().toISOString().split('T')[0];
+            
+            let csvContent = 'Audit Name,Doctor ID,Patient MRN,Allocation Date\n';
+            
+            for (const [doctor, patientList] of Object.entries(allocations)) {
+                for (const patient of patientList) {
+                    csvContent += `"${auditName}","${doctor}","${patient}","${timestamp}"\n`;
+                }
+            }
+            
+            downloadFile(csvContent, `patient_allocation_${timestamp}.csv`, 'text/csv');
+        }
+
+        function exportToJSON() {
+            const auditName = document.getElementById('auditName').value || 'Unnamed Audit';
+            const timestamp = new Date().toISOString();
+            
+            const exportData = {
+                auditName: auditName,
+                timestamp: timestamp,
+                totalDoctors: doctors.length,
+                totalPatients: patients.length,
+                patientsPerDoctor: parseInt(document.getElementById('patientsPerDoctor').value),
+                allocations: allocations
+            };
+            
+            const jsonContent = JSON.stringify(exportData, null, 2);
+            downloadFile(jsonContent, `patient_allocation_${timestamp.split('T')[0]}.json`, 'application/json');
+        }
+
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showMessage(`File ${fileName} downloaded successfully!`, 'success');
+        }
+
+        function printResults() {
+            const auditName = document.getElementById('auditName').value || 'Patient Audit';
+            const printWindow = window.open('', '_blank');
+            
+            let printContent = `
+                <html>
+                <head>
+                    <title>${auditName} - Allocation Results</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { color: #333; }
+                        .allocation { margin-bottom: 30px; page-break-inside: avoid; }
+                        .allocation h3 { color: #5e72e4; }
+                        .patient-list { list-style-type: none; padding-left: 20px; }
+                        .patient-list li { padding: 3px 0; font-family: monospace; }
+                        .stats { margin-bottom: 30px; }
+                        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+                        .stat { text-align: center; }
+                        @media print { .allocation { page-break-inside: avoid; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>${auditName}</h1>
+                    <p>Generated: ${new Date().toLocaleString()}</p>
+                    
+                    <div class="stats">
+                        <h2>Statistics</h2>
+                        <div class="stats-grid">
+                            <div class="stat">
+                                <strong>Total Doctors:</strong><br>${doctors.length}
+                            </div>
+                            <div class="stat">
+                                <strong>Total Patients:</strong><br>${patients.length}
+                            </div>
+                            <div class="stat">
+                                <strong>Allocated:</strong><br>${document.getElementById('patientsAllocated').textContent}
+                            </div>
+                            <div class="stat">
+                                <strong>Unallocated:</strong><br>${document.getElementById('patientsUnallocated').textContent}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h2>Allocations</h2>
+            `;
+            
+            for (const [doctor, patientList] of Object.entries(allocations)) {
+                printContent += `
+                    <div class="allocation">
+                        <h3>Doctor: ${doctor}</h3>
+                        <p>Allocated Patients: ${patientList.length}</p>
+                        <ul class="patient-list">
+                            ${patientList.map(patient => `<li>${patient}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            printContent += `
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all data and results?')) {
+                doctors = [];
+                patients = [];
+                allocations = {};
+                
+                document.getElementById('doctorIds').value = '';
+                document.getElementById('patientMrns').value = '';
+                document.getElementById('auditName').value = '';
+                document.getElementById('patientsPerDoctor').value = '10';
+                
+                document.getElementById('statsSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.add('hidden');
+                
+                showMessage('All data cleared', 'info');
+            }
+        }
+
+        // CSV File Handlers
+        document.getElementById('doctorCsv').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('doctorFileName').textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const csv = event.target.result;
+                    const lines = csv.split('\n');
+                    doctors = [];
+                    
+                    for (let line of lines) {
+                        const values = line.split(',');
+                        if (values[0]) {
+                            const id = values[0].trim().replace(/['"]/g, '');
+                            if (validateStaffId(id)) {
+                                doctors.push(id);
+                            }
+                        }
+                    }
+                    
+                    showMessage(`Loaded ${doctors.length} valid doctor IDs from CSV`, 'success');
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.getElementById('patientCsv').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('patientFileName').textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const csv = event.target.result;
+                    const lines = csv.split('\n');
+                    patients = [];
+                    
+                    for (let line of lines) {
+                        const values = line.split(',');
+                        if (values[0]) {
+                            const mrn = values[0].trim().replace(/['"]/g, '');
+                            const cleanedMRN = cleanMRN(mrn); // Clean the MRN (remove hyphens/spaces)
+                            if (/^\d{6,10}$/.test(cleanedMRN)) {
+                                patients.push(cleanedMRN);
+                            }
+                        }
+                    }
+                    
+                    showMessage(`Loaded ${patients.length} valid patient MRNs from CSV (hyphens removed automatically)`, 'success');
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Initialize with sample data for testing (remove in production)
+        function loadSampleData() {
+            const sampleDoctors = ['12345678', '87654321', '11223344', '55667788', '99887766'];
+            const samplePatients = [];
+            // Generate varied length MRNs (6-10 digits) for demonstration
+            for (let i = 0; i < 55; i++) {
+                if (i % 5 === 0) {
+                    samplePatients.push(String(100000 + i).padStart(6, '0')); // 6 digits
+                } else if (i % 5 === 1) {
+                    samplePatients.push(String(1000000 + i).padStart(7, '0')); // 7 digits
+                } else if (i % 5 === 2) {
+                    samplePatients.push(String(10000000 + i).padStart(8, '0')); // 8 digits
+                } else if (i % 5 === 3) {
+                    samplePatients.push(String(100000000 + i).padStart(9, '0')); // 9 digits
+                } else {
+                    samplePatients.push(String(1000000000 + i).padStart(10, '0')); // 10 digits
+                }
+            }
+            
+            document.getElementById('doctorIds').value = sampleDoctors.join('\n');
+            document.getElementById('patientMrns').value = samplePatients.join('\n');
+            document.getElementById('auditName').value = 'Sample Q1 2024 Patient Safety Audit';
+        }
+
+        // Uncomment the line below to load sample data on page load (for testing)
+        // loadSampleData();
+    </script>
+</body>
+</html>
