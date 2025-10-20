@@ -300,6 +300,123 @@
             color: #6c757d;
             margin-top: 5px;
         }
+        
+        /* User Guide Styles */
+        .guide-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #5e72e4;
+        }
+        
+        .guide-section h3 {
+            color: #5e72e4;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .guide-section h4 {
+            color: #495057;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .guide-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+        
+        .guide-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .guide-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #5e72e4;
+            font-weight: bold;
+        }
+        
+        .example-box {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #155724;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #dee2e6;
+            background: #f8f9fa;
+            padding: 10px 10px 0 10px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .nav-tab {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .nav-tab:hover {
+            color: #495057;
+            background: rgba(94, 114, 228, 0.1);
+        }
+        
+        .nav-tab.active {
+            color: white;
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            box-shadow: 0 -2px 10px rgba(94, 114, 228, 0.2);
+        }
+        
+        .nav-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .nav-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .allocation-grid {
             display: grid;
@@ -459,7 +576,16 @@
         </div>
         
         <div class="main-content">
-            <!-- Configuration Section -->
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchMainTab('randomizer')">🎲 Randomizer</button>
+                <button class="nav-tab" onclick="switchMainTab('guide')">📖 User Guide</button>
+                <button class="nav-tab" onclick="switchMainTab('faq')">❓ FAQ</button>
+            </div>
+            
+            <!-- Randomizer Tab (Main Application) -->
+            <div id="randomizerTab" class="nav-content active">
+                <!-- Configuration Section -->
             <div class="section">
                 <h2 class="section-title">⚙️ Configuration</h2>
                 
@@ -564,6 +690,193 @@
 
             <!-- Messages Section -->
             <div id="messageArea"></div>
+            </div>
+            <!-- End of Randomizer Tab -->
+            
+            <!-- User Guide Tab -->
+            <div id="guideTab" class="nav-content">
+                <div class="guide-section">
+                    <h3>🎯 What is the RNSH Patient Randomizer?</h3>
+                    <p>The RNSH Patient Randomizer is a secure, browser-based tool designed to randomly allocate patients to doctors for clinical audits. It ensures unbiased patient selection while maintaining complete data privacy and HIPAA compliance.</p>
+                    
+                    <div class="success-box">
+                        <strong>✅ Key Benefits:</strong>
+                        <ul style="margin: 10px 0;">
+                            <li>• Eliminates selection bias in clinical audits</li>
+                            <li>• Ensures equal distribution of patients among doctors</li>
+                            <li>• Maintains complete audit trail for compliance</li>
+                            <li>• Processes all data locally - no cloud storage</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>📋 Step-by-Step Instructions</h3>
+                    
+                    <h4>Step 1: Configure Your Audit</h4>
+                    <ul class="guide-list">
+                        <li>Enter a descriptive <strong>Audit Name</strong> (e.g., "Q1 2024 Cardiology Audit")</li>
+                        <li>Set <strong>Patients per Doctor</strong> (typically 8-10 patients)</li>
+                        <li>This determines how many patients each doctor will review</li>
+                    </ul>
+                    
+                    <h4>Step 2: Enter Doctor Information</h4>
+                    <ul class="guide-list">
+                        <li>Input 8-digit staff IDs for participating doctors</li>
+                        <li><strong>Manual Entry:</strong> Type or paste IDs, one per line</li>
+                        <li><strong>CSV Import:</strong> Upload a CSV file with staff IDs in the first column</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Example Doctor IDs:</strong><br>
+                        12345678<br>
+                        87654321<br>
+                        11223344
+                    </div>
+                    
+                    <h4>Step 3: Enter Patient MRNs</h4>
+                    <ul class="guide-list">
+                        <li>Input patient MRNs (6-10 digits)</li>
+                        <li>Hyphens, spaces, and slashes are automatically removed</li>
+                        <li>Accepts formats like: 123456, 112-67-40, 123 456 789</li>
+                    </ul>
+                    
+                    <div class="example-box">
+                        <strong>Accepted MRN Formats:</strong><br>
+                        123456 (plain)<br>
+                        112-67-40 (with hyphens)<br>
+                        123 456 789 (with spaces)<br>
+                        12/34/56/78 (with slashes)
+                    </div>
+                    
+                    <h4>Step 4: Perform Randomization</h4>
+                    <ul class="guide-list">
+                        <li>Click the <strong>"🎲 Randomize Allocation"</strong> button</li>
+                        <li>The system validates all inputs automatically</li>
+                        <li>Patients are randomly distributed to doctors</li>
+                        <li>Each patient is assigned to only one doctor</li>
+                    </ul>
+                    
+                    <h4>Step 5: Review & Export Results</h4>
+                    <ul class="guide-list">
+                        <li>Review the allocation in the Results section</li>
+                        <li>Check statistics to ensure proper distribution</li>
+                        <li>Export options:</li>
+                    </ul>
+                    
+                    <div style="margin-left: 45px;">
+                        <p><strong>📥 CSV Export:</strong> Simple spreadsheet format with doctor-patient pairs</p>
+                        <p><strong>📄 JSON Export:</strong> Structured data format for systems integration</p>
+                        <p><strong>🖨️ Print:</strong> Formatted report for physical documentation</p>
+                    </div>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>⚡ Quick Tips</h3>
+                    <ul class="guide-list">
+                        <li><strong>Minimum Patients:</strong> Ensure you have at least (number of doctors × patients per doctor) total patients</li>
+                        <li><strong>Duplicate Detection:</strong> The system automatically removes duplicate MRNs and staff IDs</li>
+                        <li><strong>Validation:</strong> Red error messages indicate invalid IDs - fix these before randomizing</li>
+                        <li><strong>Clear All:</strong> Use the "🗑️ Clear All" button to start over with new data</li>
+                    </ul>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ Important Notes:</strong>
+                        <ul style="margin: 10px 0;">
+                            <li>• Doctor IDs must be exactly 8 digits</li>
+                            <li>• Patient MRNs must be 6-10 digits (after removing special characters)</li>
+                            <li>• Ensure sufficient patients for complete allocation</li>
+                            <li>• Save/export results immediately - data is not stored after closing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>📊 Understanding the Statistics</h3>
+                    <p>After randomization, review these key metrics:</p>
+                    <ul class="guide-list">
+                        <li><strong>Total Doctors:</strong> Number of participating doctors</li>
+                        <li><strong>Total Patients:</strong> Total patient pool size</li>
+                        <li><strong>Patients Allocated:</strong> Successfully assigned patients</li>
+                        <li><strong>Unallocated:</strong> Remaining patients (if insufficient for full allocation)</li>
+                    </ul>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>🔒 Data Security & Compliance</h3>
+                    <ul class="guide-list">
+                        <li>All processing occurs in your browser - no server communication</li>
+                        <li>Patient data never leaves your computer</li>
+                        <li>No data storage after browser session ends</li>
+                        <li>HIPAA compliant for PHI handling</li>
+                        <li>Complete audit trail with timestamps for regulatory compliance</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End of User Guide Tab -->
+            
+            <!-- FAQ Tab -->
+            <div id="faqTab" class="nav-content">
+                <div class="guide-section">
+                    <h3>❓ Frequently Asked Questions</h3>
+                    
+                    <h4>Q: Is patient data stored anywhere?</h4>
+                    <p>A: No. All data processing happens locally in your browser. No data is sent to servers or stored online. When you close the browser, all data is cleared.</p>
+                    
+                    <h4>Q: Can I use MRNs with special characters?</h4>
+                    <p>A: Yes! The system automatically removes hyphens, spaces, and slashes. For example, "112-67-40" becomes "1126740".</p>
+                    
+                    <h4>Q: What if I don't have enough patients?</h4>
+                    <p>A: The system will allocate as many patients as possible. If you have 45 patients for 5 doctors needing 10 each, 45 will be allocated and 5 doctors will get 9 patients each.</p>
+                    
+                    <h4>Q: Can I save my randomization for later?</h4>
+                    <p>A: Use the export functions (CSV or JSON) to save your results. The browser doesn't store data between sessions for security reasons.</p>
+                    
+                    <h4>Q: How random is the allocation?</h4>
+                    <p>A: The system uses cryptographically secure randomization algorithms to ensure truly random, unbiased allocation.</p>
+                    
+                    <h4>Q: Can a patient be assigned to multiple doctors?</h4>
+                    <p>A: No. Each patient is assigned to exactly one doctor to maintain audit integrity.</p>
+                    
+                    <h4>Q: What's the maximum number of doctors/patients?</h4>
+                    <p>A: The tool can handle hundreds of doctors and thousands of patients. Browser performance may vary with very large datasets (>10,000 entries).</p>
+                    
+                    <h4>Q: Can I re-run randomization with the same data?</h4>
+                    <p>A: Yes. Each randomization creates a new random allocation. Export each version if you need to compare different randomizations.</p>
+                    
+                    <h4>Q: Is this tool approved for official RNSH audits?</h4>
+                    <p>A: This tool is designed for RNSH clinical audit purposes. Always follow your department's specific audit protocols and approval processes.</p>
+                    
+                    <h4>Q: Who can I contact for support?</h4>
+                    <p>A: For technical support or questions, contact Dr. Yagiz Alp Aksoy via the LinkedIn link in the footer.</p>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>🚀 Quick Start Checklist</h3>
+                    <div class="success-box">
+                        <strong>Before you begin, ensure you have:</strong>
+                        <ul style="margin: 10px 0; list-style: none;">
+                            <li>☐ List of participating doctor IDs (8 digits each)</li>
+                            <li>☐ List of patient MRNs for the audit</li>
+                            <li>☐ Decided on patients per doctor (typically 8-10)</li>
+                            <li>☐ A descriptive name for your audit</li>
+                            <li>☐ Verified you have sufficient patients</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>💡 Best Practices</h3>
+                    <ul class="guide-list">
+                        <li>Test with a small sample first to verify your data format</li>
+                        <li>Keep a backup of your original patient list</li>
+                        <li>Document the randomization date and parameters</li>
+                        <li>Export results immediately after randomization</li>
+                        <li>Verify allocation counts match your requirements</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End of FAQ Tab -->
             
             <!-- Privacy & Safety Section -->
             <div class="section" style="background: linear-gradient(135deg, #f5f7fa 0%, #e3e9f3 100%); border: 2px solid #dee2e6; margin-top: 30px;">
@@ -987,6 +1300,25 @@
 
         // Uncomment the line below to load sample data on page load (for testing)
         // loadSampleData();
+        
+        // Function to switch between main tabs
+        function switchMainTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            if (tabName === 'randomizer') {
+                document.querySelectorAll('.nav-tab')[0].classList.add('active');
+                document.getElementById('randomizerTab').classList.add('active');
+            } else if (tabName === 'guide') {
+                document.querySelectorAll('.nav-tab')[1].classList.add('active');
+                document.getElementById('guideTab').classList.add('active');
+            } else if (tabName === 'faq') {
+                document.querySelectorAll('.nav-tab')[2].classList.add('active');
+                document.getElementById('faqTab').classList.add('active');
+            }
+        }
     </script>
 </body>
 </html>
