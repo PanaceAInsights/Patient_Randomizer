@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Audit Randomizer</title>
+    <title>RNSH Audits - Patient Randomizer ©</title>
     <style>
         * {
             margin: 0;
@@ -350,13 +350,111 @@
             .allocation-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer-left, .footer-right {
+                width: 100%;
+            }
+        }
+        
+        /* Footer Styles */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            margin-top: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .footer-left, .footer-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* PanaceAI Branding */
+        .panacea-link {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+        
+        .panacea-text {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffcc, #00ccff, #cc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(0, 255, 204, 0.5), 
+                             0 0 30px rgba(0, 204, 255, 0.5),
+                             0 0 40px rgba(204, 0, 255, 0.3);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(0, 255, 204, 0.8), 
+                             0 0 40px rgba(0, 204, 255, 0.8),
+                             0 0 50px rgba(204, 0, 255, 0.6);
+            }
+        }
+        
+        .panacea-tagline {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        
+        .panacea-link:hover .panacea-text {
+            animation-duration: 0.5s;
+        }
+        
+        .panacea-link:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Doctor Link Styling */
+        .doctor-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .doctor-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏥 Patient Audit Randomizer</h1>
+            <h1>🏥 RNSH Audits - Patient Randomizer ©</h1>
             <p>Randomly allocate patients to doctors for clinical audits</p>
         </div>
         
@@ -466,6 +564,34 @@
 
             <!-- Messages Section -->
             <div id="messageArea"></div>
+            
+            <!-- Privacy & Safety Section -->
+            <div class="section" style="background: linear-gradient(135deg, #f5f7fa 0%, #e3e9f3 100%); border: 2px solid #dee2e6; margin-top: 30px;">
+                <h2 class="section-title" style="color: #495057;">🔒 Privacy & Safety</h2>
+                <div style="padding: 10px; line-height: 1.8;">
+                    <p style="margin-bottom: 10px;"><strong>Data Privacy:</strong> All randomization is performed locally in your browser. No patient data is transmitted to external servers or stored online.</p>
+                    <p style="margin-bottom: 10px;"><strong>HIPAA Compliance:</strong> This tool processes data entirely client-side, ensuring PHI (Protected Health Information) remains secure on your device.</p>
+                    <p style="margin-bottom: 10px;"><strong>Security:</strong> Data exists only in your browser's memory during the session and is cleared when you close the page.</p>
+                    <p style="margin-bottom: 10px;"><strong>Audit Trail:</strong> All allocations include timestamps for regulatory compliance and audit documentation.</p>
+                    <p style="margin-bottom: 10px;"><strong>Clinical Use:</strong> This tool is designed for legitimate clinical audit purposes at RNSH and affiliated healthcare institutions.</p>
+                    <p style="font-size: 0.9em; color: #6c757d; font-style: italic;">© 2024 RNSH Clinical Audit Team. This tool is provided for authorized healthcare professionals only.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-left">
+                <a href="https://www.panacea-insights.com" target="_blank" class="panacea-link">
+                    <span class="panacea-text">PanaceAI</span>
+                    <span class="panacea-tagline">Intelligent Healthcare Solutions</span>
+                </a>
+            </div>
+            <div class="footer-right">
+                <a href="https://www.linkedin.com/in/yagizalpaksoy/" target="_blank" class="doctor-link">
+                    Dr Yagiz Alp Aksoy MD PhD
+                </a>
+            </div>
         </div>
     </div>
 
